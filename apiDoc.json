@@ -1,0 +1,300 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Players api documentation",
+      "version": "1.0.0",
+      "title": "Swagger Players Challenge Chapter 8",
+      "contact": {
+        "email": "farrelfauzan78@gmail.com"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "players",
+        "description": "Everything about your Players"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/players": {
+        "get": {
+          "tags": [
+            "players"
+          ],
+          "summary": "List all players",
+          "description": "described hit",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "password":{
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "experience": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "lvl": {
+                        "type":"integer",
+                        "example":1
+                    }
+                  }
+                }
+              }
+            },
+            "500":{
+                "description" : "Some error occurred while retrieving players."
+            }
+            
+          }
+        },
+        "post":{
+            "tags":[
+                "players"
+            ],
+            "summary": "Add a new players to database",
+            "description": "Hit this to create/register new players",
+            "consumes":[
+              "application/json"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters":[
+                {
+                    "in":"body",
+                    "name": "body",
+                    "required": true,
+                    "description": "Add player object",
+                    "schema":{
+                        "$ref":"#/definitions/Player"
+                    }
+                }
+            ],
+            "responses":{
+                "201":{
+                    "description": "Created"
+                  },
+                "400": {
+                    "description" : "Username, email, or password field cannot be empty"
+                  },
+                "500":{
+                    "description" : "Some error occurred while retrieving players."
+                }
+            }
+
+        }
+      },
+      "/players/{id}" : {
+        "get": {
+          "tags":[
+            "players"
+          ],
+          "summary": "Find player by ID",
+          "description": "This will return a single player from ID you hit",
+          "operationId": "getPlayerId",
+          "produces":[
+            "application/json"
+          ],
+          "parameters":[
+            {
+              "name": "id",
+              "in":"path",
+              "description": "Player ID",
+              "required" : true,
+              "type": "integer"
+            }
+          ],
+          "responses":{
+            "200": {
+              "description": "Success"
+            },
+            "500":{
+              "description": "Error retrieving Player with this ID"
+            }
+          }
+        },
+        "put": {
+          "tags":[
+            "players"
+          ],
+          "summary": "Edit Player",
+          "description": "Edit player by ID",
+          "operationId": "updatePlayer",
+          "consumes":[
+            "application/json"
+          ],
+          "produces":[
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Player ID",
+              "required": true,
+              "type": "integer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Add player object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Player"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Cannot update player with this ID. Maybe Player was not found or req.body is empty!"
+            },
+            "500":{
+              "description":"Error updating Player with this ID"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "players"
+          ],
+          "summary": "Delete Player",
+          "description": "Delete player with ID",
+          "opreationId": "deletePlayer",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Player ID",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Cannot delete player with this ID. Maybe Player was not found or req.body is empty!"
+            },
+            "500":{
+              "description":"Could not delete player with this ID"
+            }
+          }
+        }
+      },
+      "/players/exp/{id}": {
+        "post":{
+          "tags":[
+            "players"
+          ],
+          "summary":"Add a new players experience to database",
+          "description": "Add player experience",
+          "operationId": "addPlayerExp",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Player ID",
+              "required": true,
+              "type": "integer"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Add player object",
+              "required": true,
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "exp": {
+                    "type": "integer",
+                    "example": 123
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Created"
+            },
+            "400": {
+              "description":"Cannot update player with this ID"
+            },
+            "500": {
+              "description": "Error updating Player with this ID"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Player": {
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "email"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@example.com"
+          },
+          "password": {
+            "type": "string"
+          },
+          "experience": {
+            "type": "integer"
+          },
+          "lvl": {
+            "type": "integer"
+          }
+        },
+        "xml": {
+          "name": "Player"
+        }
+      }
+    }
+  }
